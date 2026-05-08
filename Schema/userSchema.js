@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
 
 
-    id: String,
+    id: Number,
     favoriteActors: [Number],
     favoriteGenres: [String],
 
