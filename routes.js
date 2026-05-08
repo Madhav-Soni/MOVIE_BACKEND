@@ -11,7 +11,7 @@ router.post("/signup", signupController);
 router.post("/login", loginController);
 
 //recommendationRoutes
-import { verifyToken,recommendationController } from "./recommendation/recommendationController.js";
+import { recommendationController } from "./recommendation/recommendationController.js";
 router.get("/recommendations/:userId", verifyToken, recommendationController);
 
 //watchlistRoutes
