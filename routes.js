@@ -1,6 +1,8 @@
 import express from "express";
 const router = express.Router();
-import jwt from "jsonwebtoken";
+
+//middleware
+import { verifyToken } from "./middleware/verifyToken.js";
 
 //auth
 import { signupController } from "./auth/signup.js";

@@ -2,13 +2,24 @@ import mongoose from 'mongoose';
 
 
 const userSchema = new mongoose.Schema({
+    name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
 
+    favoriteActors: {
+        type: [Number],
+        default: []
+    },
 
-    id: Number,
-    favoriteActors: [Number],
-    favoriteGenres: [String],
+    favoriteGenres: {
+        type: [String],
+        default: []
+    },
+
+    watchlist: {
+        type: [Number],
+        default: []
+    },
 
     watchHistory: [
         {
@@ -23,7 +34,6 @@ const userSchema = new mongoose.Schema({
             rating: Number,
         },
     ],
-    watchlist: [Number],
 });
 
 const User = mongoose.model('User', userSchema);

@@ -1,23 +1,20 @@
 import User from "../Schema/userSchema.js";
 import Movie from "../Schema/movieSchema.js";
-import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
-export const verifyToken = (req, res, next) => {
-    const token = req.header("Authorization")?.split(" ")[1];
-    if (!token) return res.status(401).json({ message: "Access Denied" });
-
-    try {
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = verified;
-        next();
-    } catch (err) {
-        res.status(400).json({ message: "Invalid Token" });
-    }
-};
-
-export const recommendationController =  async (req, res) => {
+export const recommendationController = async (req, res) => {
     try {
         const { userId } = req.params;
+        if (req.user._id !== userId) {
+            return res.status(403).json({
+                message: "Unauthorized access"
+            });
+        }
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                message: "Invalid user ID"
+            });
+        }
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
