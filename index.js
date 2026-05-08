@@ -12,7 +12,10 @@ import dbconnect from "./database/db.js";
 dbconnect();
 
 import routes from "./routes.js";
+import tmdbRoutes from "./tmdbRoutes.js";
+
 app.use("/api", routes);
+app.use("/api/tmdb", tmdbRoutes);
 
 
 app.get("/", (req, res) => {

@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema({
             rating: Number,
         },
     ],
+    watchlist: [Number],
 });
 
 const User = mongoose.model('User', userSchema);
