@@ -1,10 +1,11 @@
 import User from "../Schema/userSchema.js";
+import mongoose from "mongoose";
 
 export const historyController = async (req, res) => {
     try {
         const { movieId } = req.body;
         const { userId } = req.params;
-        if (req.user._id !== userId) {
+        if (req.user._id.toString() !== userId.toString()) {
             return res.status(403).json({
                 message: "Unauthorized access"
             });

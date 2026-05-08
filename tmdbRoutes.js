@@ -3,6 +3,11 @@ const router = express.Router();
 
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 
+import { verifyToken }
+from "./middleware/verifyToken.js";
+
+router.use(verifyToken);
+
 router.use(async (req, res) => {
     try {
         const path = req.path;

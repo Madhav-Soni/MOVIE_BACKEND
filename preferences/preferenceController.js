@@ -5,7 +5,7 @@ export const preferenceController = async (req, res) => {
     try {
         const { userId } = req.params;
         const { favoriteActors, favoriteGenres } = req.body;
-        if (req.user._id !== userId) {
+        if (req.user._id.toString() !== userId.toString()) {
             return res.status(403).json({
                 message: "Unauthorized access"
             });

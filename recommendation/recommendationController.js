@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 export const recommendationController = async (req, res) => {
     try {
         const { userId } = req.params;
-        if (req.user._id !== userId) {
+        if (req.user._id.toString() !== userId.toString()) {
             return res.status(403).json({
                 message: "Unauthorized access"
             });
