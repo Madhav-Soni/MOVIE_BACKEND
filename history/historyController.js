@@ -57,10 +57,15 @@ export const historyController = async (req, res) => {
         const user = await User.findById(req.params.userId);
         if (!user) return res.status(404).json({ message: "User not found" });
 
-        user.watchHistory.push({
-            movieId,
-            watchedAt: new Date()
-        });
+        const existingEntry = user.watchHistory.find(entry => entry.movieId === movieId);
+        if (existingEntry) {
+            existingEntry.watchedAt = new Date();
+        } else {
+            user.watchHistory.push({
+                movieId,
+                watchedAt: new Date()
+            });
+        }
 
         await user.save();
         res.status(200).json({ message: "Watched history updated", watchHistory: user.watchHistory });

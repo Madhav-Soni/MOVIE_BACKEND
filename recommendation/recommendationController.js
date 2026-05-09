@@ -72,7 +72,7 @@ export const recommendationController = async (req, res) => {
             {
                 params: {
                     api_key: process.env.TMDB_API_KEY,
-                    with_genres: genreIds.join(","),
+                    with_genres: genreIds.join("|"),
                     sort_by: "popularity.desc"
                 }
             }
@@ -81,7 +81,7 @@ export const recommendationController = async (req, res) => {
         return res.status(200).json(
             response.data.results.slice(0, 20)
         );
-        
+
     } catch (error) {
         console.log(error);
         return res.status(500).json({
