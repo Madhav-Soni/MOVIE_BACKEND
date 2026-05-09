@@ -29,7 +29,10 @@ export const getPreferenceController = async (req, res) => {
                 user.favoriteActors,
 
             favoriteGenres:
-                user.favoriteGenres
+                user.favoriteGenres,
+
+            selectedMood:
+                user.selectedMood
         });
 
     } catch (error) {
@@ -43,7 +46,7 @@ export const getPreferenceController = async (req, res) => {
 export const preferenceController = async (req, res) => {
     try {
         const { userId } = req.params;
-        const { favoriteActors, favoriteGenres } = req.body;
+        const { favoriteActors, favoriteGenres, selectedMood } = req.body;
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({
                 message: "Invalid user ID"
@@ -66,6 +69,9 @@ export const preferenceController = async (req, res) => {
         }
         if (favoriteGenres !== undefined) {
             user.favoriteGenres = favoriteGenres;
+        }
+        if (selectedMood !== undefined) {
+            user.selectedMood = selectedMood;
         }
 
         await user.save();

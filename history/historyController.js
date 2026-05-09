@@ -10,7 +10,11 @@ export const historyController = async (req, res) => {
                 message: "Invalid user ID"
             });
         }
-        
+
+        if (!movieId) {
+            return res.status(400).json({ message: "movieId is required" })
+        }
+
         if (req.user._id.toString() !== userId.toString()) {
             return res.status(403).json({
                 message: "Unauthorized access"

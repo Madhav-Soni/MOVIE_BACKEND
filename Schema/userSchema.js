@@ -37,6 +37,8 @@ const userSchema = new mongoose.Schema({
             rating: Number,
         },
     ],
+
+    selectedMood: { type: String, default: null }
 });
 
 const User = mongoose.model('User', userSchema);

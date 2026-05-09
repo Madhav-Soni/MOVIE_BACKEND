@@ -13,7 +13,7 @@ import Movie from "./Schema/movieSchema.js";   // ← model, not User
 dotenv.config();
 
 // ── 1. Connect ────────────────────────────────────────────────────────────────
-await mongoose.connect(process.env.MONGO_URI);
+await mongoose.connect(process.env.MONGODB_URI);
 console.log("MongoDB connected");
 
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
