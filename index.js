@@ -8,7 +8,7 @@ app.use(cors({
     credentials: true
 }));
 
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
 
 const PORT = process.env.PORT || 3000;
 

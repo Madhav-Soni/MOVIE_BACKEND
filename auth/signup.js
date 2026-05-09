@@ -3,6 +3,14 @@ import User from "../Schema/userSchema.js";
 import jwt from "jsonwebtoken";
 
 export const signupController = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+
+        return res.status(400).json({
+            errors: errors.array()
+        });
+    }
+
     try {
         const { name, email, password } = req.body;
         if (!email || !password || !name) {
