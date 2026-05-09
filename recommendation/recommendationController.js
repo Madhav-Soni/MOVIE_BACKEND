@@ -1,6 +1,8 @@
 import axios from "axios";
 import User from "../Schema/userSchema.js";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
 const genreMap = {
     "Action": 28,
@@ -10,13 +12,19 @@ const genreMap = {
     "Crime": 80,
     "Documentary": 99,
     "Drama": 18,
+    "Family": 10751,
     "Fantasy": 14,
+    "History": 36,
     "Horror": 27,
+    "Music": 10402,
     "Mystery": 9648,
     "Romance": 10749,
+    "Science Fiction": 878,
     "Sci-Fi": 878,
     "SciFi": 878,
+    "TV Movie": 10770,
     "Thriller": 53,
+    "War": 10752,
     "Western": 37
 };
 
@@ -44,9 +52,11 @@ export const recommendationController = async (req, res) => {
         }
 
         const genreIds =
-            user.favoriteGenres.map(
-                genre => genreMap[genre]
-            );
+            user.favoriteGenres
+                .map(
+                    genre => genreMap[genre]
+                )
+                .filter(Boolean);
 
         const response = await axios.get(
             "https://api.themoviedb.org/3/discover/movie",
