@@ -13,7 +13,7 @@ router.use(async (req, res) => {
         const path = req.path;
 
         const queryParams = new URLSearchParams(req.query);
-        queryParams.append("api_key", process.env.TMDB_KEY);
+        queryParams.append("api_key", process.env.TMDB_API_KEY);
 
         const tmdbUrl = `${TMDB_BASE_URL}${path}?${queryParams.toString()}`;
 
