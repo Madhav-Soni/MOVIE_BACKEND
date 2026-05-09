@@ -32,14 +32,15 @@ export const preferenceController = async (req, res) => {
     try {
         const { userId } = req.params;
         const { favoriteActors, favoriteGenres } = req.body;
-        if (req.user._id.toString() !== userId.toString()) {
-            return res.status(403).json({
-                message: "Unauthorized access"
-            });
-        }
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({
                 message: "Invalid user ID"
+            });
+        }
+        
+        if (req.user._id.toString() !== userId.toString()) {
+            return res.status(403).json({
+                message: "Unauthorized access"
             });
         }
 

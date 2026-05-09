@@ -6,10 +6,13 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
 
-    favoriteActors: {
-        type: [Number],
-        default: []
-    },
+    favoriteActors: [
+        {
+            id: Number,
+            name: String,
+            profile_path: String,
+        }
+    ],
 
     favoriteGenres: {
         type: [String],
