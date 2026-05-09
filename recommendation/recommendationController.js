@@ -51,12 +51,19 @@ export const recommendationController = async (req, res) => {
             });
         }
 
+        if (
+            (!user.favoriteActors ||
+                user.favoriteActors.length === 0) &&
+
+            (!user.favoriteGenres ||
+                user.favoriteGenres.length === 0)
+        ) {
+            return res.status(200).json([]);
+        }
+
         const genreIds =
             user.favoriteGenres
-                .map(
-                    genre => genreMap[genre]
-                )
-                .filter(Boolean);
+                .map(genre => genreMap[genre]).filter(Boolean);
 
         const response = await axios.get(
             "https://api.themoviedb.org/3/discover/movie",
