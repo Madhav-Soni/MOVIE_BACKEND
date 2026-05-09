@@ -1,8 +1,6 @@
 import axios from "axios";
 import User from "../Schema/userSchema.js";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-dotenv.config();
 
 const genreMap = {
     "Action": 28,
@@ -65,14 +63,15 @@ export const recommendationController = async (req, res) => {
             user.favoriteGenres
                 .map(genre => genreMap[genre]).filter(Boolean);
 
+        if (genreIds.length === 0) {
+            return res.status(200).json([]);
+        }
+
         const response = await axios.get(
             "https://api.themoviedb.org/3/discover/movie",
             {
                 params: {
                     api_key: process.env.TMDB_API_KEY,
-                    with_cast: user.favoriteActors
-                        .map(actor => actor.id)
-                        .join(","),
                     with_genres: genreIds.join(","),
                     sort_by: "popularity.desc"
                 }
@@ -80,9 +79,9 @@ export const recommendationController = async (req, res) => {
         );
 
         return res.status(200).json(
-            response.data.results
+            response.data.results.slice(0, 20)
         );
-
+        
     } catch (error) {
         console.log(error);
         return res.status(500).json({
