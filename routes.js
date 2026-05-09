@@ -22,7 +22,8 @@ router.get("/watchlist/:userId", verifyToken, watchlistController);
 router.post("/watchlist-sync/:userId", verifyToken, watchlistControllerSync);
 
 // historyRoutes
-import { historyController } from "./history/historyController.js";
+import { getWatchHistory, historyController } from "./history/historyController.js";
+router.get("/watch-history/:userId", verifyToken, getWatchHistory);
 router.post("/watched/:userId", verifyToken, historyController);
 
 

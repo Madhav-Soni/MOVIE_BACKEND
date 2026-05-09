@@ -22,8 +22,6 @@ export const getPreferenceController = async (req, res) => {
             });
         }
 
-
-
         return res.status(200).json({
             favoriteActors:
                 user.favoriteActors,

@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import User from "../Schema/userSchema.js";
 import jwt from "jsonwebtoken";
+import { validationResult } from "express-validator";
 
 export const signupController = async (req, res) => {
     const errors = validationResult(req);
