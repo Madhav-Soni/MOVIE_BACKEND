@@ -5,14 +5,15 @@ export const historyController = async (req, res) => {
     try {
         const { movieId } = req.body;
         const { userId } = req.params;
-        if (req.user._id.toString() !== userId.toString()) {
-            return res.status(403).json({
-                message: "Unauthorized access"
-            });
-        }
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({
                 message: "Invalid user ID"
+            });
+        }
+        
+        if (req.user._id.toString() !== userId.toString()) {
+            return res.status(403).json({
+                message: "Unauthorized access"
             });
         }
         const user = await User.findById(req.params.userId);

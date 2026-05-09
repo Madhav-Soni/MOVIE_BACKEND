@@ -70,7 +70,9 @@ export const recommendationController = async (req, res) => {
             {
                 params: {
                     api_key: process.env.TMDB_API_KEY,
-                    with_cast: user.favoriteActors.join(","),
+                    with_cast: user.favoriteActors
+                        .map(actor => actor.id)
+                        .join(","),
                     with_genres: genreIds.join(","),
                     sort_by: "popularity.desc"
                 }

@@ -3,12 +3,12 @@ const router = express.Router();
 
 //middleware
 import { verifyToken } from "./middleware/verifyToken.js";
-
+import { authLimiter } from "./middleware/limiter.js";
 //auth
 import { signupController } from "./auth/signup.js";
 import { loginController } from "./auth/login.js";
-router.post("/signup", signupController);
-router.post("/login", loginController);
+router.post("/signup",authLimiter, signupController);
+router.post("/login", authLimiter, loginController);
 
 //recommendationRoutes
 import { recommendationController } from "./recommendation/recommendationController.js";

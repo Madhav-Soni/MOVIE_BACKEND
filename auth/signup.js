@@ -5,8 +5,8 @@ import jwt from "jsonwebtoken";
 export const signupController = async (req, res) => {
     try {
         const { name, email, password } = req.body;
-        if (!email || !password) {
-            return res.status(400).json({ message: "Email and password required" });
+        if (!email || !password || !name) {
+            return res.status(400).json({ message: "All the details are required" });
         }
 
         const normalizedEmail = email.toLowerCase();
@@ -15,7 +15,7 @@ export const signupController = async (req, res) => {
             return res.status(400).json({ message: "User already exists" });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 7);
+        const hashedPassword = await bcrypt.hash(password, 12);
         const newUser = await User.create({ name, email: normalizedEmail, password: hashedPassword });
 
         const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '7d' });

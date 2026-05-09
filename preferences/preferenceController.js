@@ -4,6 +4,16 @@ import mongoose from "mongoose";
 export const getPreferenceController = async (req, res) => {
     try {
         const { userId } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                message: "Invalid user ID"
+            });
+        }
+        if (req.user._id.toString() !== userId.toString()) {
+            return res.status(403).json({
+                message: "Unauthorized access"
+            });
+        }
         const user = await User.findById(userId);
 
         if (!user) {
@@ -11,6 +21,8 @@ export const getPreferenceController = async (req, res) => {
                 message: "User not found"
             });
         }
+
+
 
         return res.status(200).json({
             favoriteActors:
@@ -37,7 +49,7 @@ export const preferenceController = async (req, res) => {
                 message: "Invalid user ID"
             });
         }
-        
+
         if (req.user._id.toString() !== userId.toString()) {
             return res.status(403).json({
                 message: "Unauthorized access"
