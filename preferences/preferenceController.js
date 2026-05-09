@@ -63,7 +63,35 @@ export const preferenceController = async (req, res) => {
         }
 
         if (favoriteActors !== undefined) {
-            user.favoriteActors = favoriteActors;
+
+            if (!Array.isArray(favoriteActors)) {
+
+                return res.status(400).json({
+                    message: "favoriteActors must be an array"
+                });
+            }
+
+            const isValidActors =
+                favoriteActors.every(actor =>
+
+                    actor &&
+                    typeof actor === "object" &&
+
+                    typeof actor.id === "number" &&
+                    typeof actor.name === "string" &&
+
+                    (
+                        actor.profile_path === null ||
+                        typeof actor.profile_path === "string"
+                    )
+                );
+
+            if (!isValidActors) {
+
+                return res.status(400).json({
+                    message: "Invalid actor format"
+                });
+            }
         }
         if (favoriteGenres !== undefined) {
             user.favoriteGenres = favoriteGenres;
