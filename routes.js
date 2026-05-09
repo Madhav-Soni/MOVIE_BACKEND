@@ -26,7 +26,8 @@ router.post("/watched/:userId", verifyToken, historyController);
 
 
 //preferenceRoutes
-import { preferenceController } from "./preferences/preferenceController.js";
+import { getPreferenceController,preferenceController } from "./preferences/preferenceController.js";
+router.get("/preferences/:userId", verifyToken, getPreferenceController);
 router.put("/preferences/:userId", verifyToken, preferenceController);
 
 export default router;
