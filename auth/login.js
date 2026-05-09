@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import User from "../Schema/userSchema.js";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
