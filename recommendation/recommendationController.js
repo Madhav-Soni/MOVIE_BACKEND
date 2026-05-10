@@ -59,28 +59,63 @@ export const recommendationController = async (req, res) => {
             return res.status(200).json([]);
         }
 
-        const genreIds =
-            user.favoriteGenres
-                .map(genre => genreMap[genre]).filter(Boolean);
+        const genreIds = (user.favoriteGenres || [])
+            .map(genre => genreMap[genre])
+            .filter(Boolean);
 
-        if (genreIds.length === 0) {
+        const actorIds = (user.favoriteActors || [])
+            .map(actor => actor.id)
+            .filter(Boolean);
+
+        if (genreIds.length === 0 && actorIds.length === 0) {
             return res.status(200).json([]);
         }
 
-        const response = await axios.get(
-            "https://api.themoviedb.org/3/discover/movie",
-            {
-                params: {
-                    api_key: process.env.TMDB_API_KEY,
-                    with_genres: genreIds.join("|"),
-                    sort_by: "popularity.desc"
-                }
-            }
-        );
+        const fetchPromises = [];
 
-        return res.status(200).json(
-            response.data.results.slice(0, 20)
-        );
+        if (genreIds.length > 0) {
+            fetchPromises.push(
+                axios.get("https://api.themoviedb.org/3/discover/movie", {
+                    params: {
+                        api_key: process.env.TMDB_API_KEY,
+                        with_genres: genreIds.join("|"),
+                        sort_by: "popularity.desc"
+                    }
+                })
+            );
+        }
+
+        if (actorIds.length > 0) {
+            fetchPromises.push(
+                axios.get("https://api.themoviedb.org/3/discover/movie", {
+                    params: {
+                        api_key: process.env.TMDB_API_KEY,
+                        with_people: actorIds.join("|"),
+                        sort_by: "popularity.desc"
+                    }
+                })
+            );
+        }
+
+        const responses = await Promise.all(fetchPromises);
+
+        // Merge results and remove duplicates
+        const allMovies = responses.flatMap(r => r.data.results);
+        const movieMap = new Map();
+        allMovies.forEach(movie => {
+            if (!movieMap.has(movie.id)) {
+                movieMap.set(movie.id, movie);
+            }
+        });
+
+        const uniqueMovies = Array.from(movieMap.values());
+
+        // Sort by popularity and take top 20
+        const sortedMovies = uniqueMovies
+            .sort((a, b) => b.popularity - a.popularity)
+            .slice(0, 20);
+
+        return res.status(200).json(sortedMovies);
 
     } catch (error) {
         console.log(error);
