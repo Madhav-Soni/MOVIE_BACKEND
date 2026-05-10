@@ -92,6 +92,7 @@ export const preferenceController = async (req, res) => {
                     message: "Invalid actor format"
                 });
             }
+            user.favoriteActors = favoriteActors;
         }
         if (favoriteGenres !== undefined) {
             user.favoriteGenres = favoriteGenres;
