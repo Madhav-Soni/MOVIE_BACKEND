@@ -1,23 +1,26 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import rateLimit from "express-rate-limit";
 import RateLimitMongo from "rate-limit-mongo";
 
 export const authLimiter = rateLimit({
-    store: new RateLimitMongo({
+  store: process.env.MONGODB_URI
+    ? new RateLimitMongo({
         uri: process.env.MONGODB_URI,
         collectionName: "rateLimits",
-        // windowMs should match the store's expireTimeMs
         expireTimeMs: 15 * 60 * 1000,
-    }),
-    windowMs: 15 * 60 * 1000,
+      })
+    : undefined,
 
-    max: 10,
+  windowMs: 15 * 60 * 1000,
 
-    message: {
-        message:
-            "Too many requests. Try again later."
-    },
+  max: 10,
 
-    standardHeaders: true,
+  message: {
+    message: "Too many requests. Try again later.",
+  },
 
-    legacyHeaders: false
+  standardHeaders: true,
+  legacyHeaders: false,
 });
